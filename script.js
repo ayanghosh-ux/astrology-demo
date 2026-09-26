@@ -189,9 +189,31 @@ function navigateTo(sectionId) {
   if (el) {
     el.scrollIntoView({ behavior: 'smooth' });
   }
+  closeMobileMenu();
 }
 
-// Google Gemini Free AI Questions Engine
+// Mobile Hamburger Menu
+function toggleMobileMenu() {
+  const menu = document.getElementById('nav-menu');
+  const toggle = document.getElementById('nav-toggle');
+  if (!menu || !toggle) return;
+
+  const isOpen = menu.classList.toggle('open');
+  toggle.classList.toggle('active', isOpen);
+  toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+function closeMobileMenu() {
+  const menu = document.getElementById('nav-menu');
+  const toggle = document.getElementById('nav-toggle');
+  if (!menu || !toggle) return;
+
+  menu.classList.remove('open');
+  toggle.classList.remove('active');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+
+// AI Questions Engine
 async function submitAIQuestion() {
   const input = document.getElementById('ai-question-input');
   const question = input ? input.value.trim() : '';
@@ -201,10 +223,10 @@ async function submitAIQuestion() {
   const responseText = document.getElementById('ai-response-text');
 
   responseBox.classList.remove('hidden');
-  responseText.innerHTML = "<em>✦ Google Gemini Free AI is formulating Vedic astrological response...</em>";
+  responseText.innerHTML = "<em>✦ AI is formulating Vedic astrological response...</em>";
 
   try {
-    const res = await fetch('/api/ask-gemini', {
+    const res = await fetch('/api/ask-ai', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question })
@@ -291,6 +313,7 @@ function openBookingModal(serviceName = 'Comprehensive Life Synthesis (₹2,999)
   const serviceInput = document.getElementById('modal-service');
   if (serviceInput) serviceInput.value = serviceName;
   if (modal) modal.classList.remove('hidden');
+  closeMobileMenu();
 }
 
 function closeBookingModal() {
