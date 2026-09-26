@@ -1,20 +1,353 @@
-<!doctype html>
-<html lang="en" class="dark scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ayan Ghosh Astrologer</title>
-    <meta name="description" content="Premium Vedic Astrologer Ayan Ghosh – Book personalized consultations, explore live daily horoscopes, sync appointments to calendar, and connect via WhatsApp." />
-    <meta property="og:title" content="Ayan Ghosh Astrologer" />
-    <meta property="og:description" content="Premium Vedic Astrologer Ayan Ghosh – Book personalized consultations, explore live daily horoscopes, sync appointments to calendar, and connect via WhatsApp." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-[#07090e] text-[#e2e8f0] antialiased selection:bg-[#d4af37]/30 selection:text-amber-200">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astrologer Ayan Ghosh · Vedic Jyotish Sanctum</title>
+  <meta name="description" content="Consult Astrologer Ayan Ghosh. Book Vedic readings, get personalized daily horoscopes, sync to Google Calendar, and ask Google Gemini Free AI." />
+  
+  <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand" onclick="navigateTo('home')">
+        <div class="brand-icon">✦</div>
+        <div>
+          <span class="brand-title">AYAN GHOSH</span>
+          <span class="brand-sub">Vedic Jyotish Sanctum</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#home" onclick="navigateTo('home')" class="active">Overview</a>
+        <a href="#horoscopes" onclick="navigateTo('horoscopes')">Daily Horoscopes</a>
+        <a href="#ask-ai" onclick="navigateTo('ask-ai')" class="ai-link">✦ Ask Free AI</a>
+        <a href="#services" onclick="navigateTo('services')">Readings</a>
+        <a href="#calculator" onclick="navigateTo('calculator')">Kundli & Transits</a>
+        <a href="#dashboard" onclick="navigateTo('dashboard')">Dashboard</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://wa.me/916294601364?text=Namaskar%20Astrologer%20Ayan%20Ghosh%20ji,%20I%20would%20like%20to%20consult%20with%20you." target="_blank" class="btn-whatsapp">
+          WhatsApp: 6294601364
+        </a>
+        <button class="btn-primary" onclick="openBookingModal()">Book Reading</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Sections -->
+  <main>
+
+    <!-- SECTION 1: HERO -->
+    <section id="home" class="section hero-section">
+      <div class="container hero-container">
+        <div class="badge">Vedic Astrologer & Jyotish Acharya · Kolkata, India</div>
+        <h1 class="hero-title">Decode Your Cosmic Blueprint With Absolute Precision</h1>
+        <p class="hero-desc">
+          Astrologer Ayan Ghosh synthesizes classical Parashari Jyotish, D9 Navamsha divisional charts, and Gochara transits to deliver clarity for career, marriage, wealth, and spiritual growth.
+        </p>
+        <div class="hero-cta-group">
+          <button class="btn-primary-large" onclick="openBookingModal()">Book Confidential Reading</button>
+          <button class="btn-secondary-large" onclick="navigateTo('ask-ai')">Ask Google Gemini Free AI</button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number">12+</span>
+            <span class="stat-label">Years Classical Study</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">4,800+</span>
+            <span class="stat-label">Kundlis Analyzed</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Confidential & Direct</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">WhatsApp</span>
+            <span class="stat-label">+91 6294601364</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: COSMIC WISDOM (FEATURED) -->
+    <section class="section wisdom-section">
+      <div class="container">
+        <div class="wisdom-card">
+          <div class="wisdom-header">
+            <div class="wisdom-tag">Daily Vedic Ephemeris & Shloka</div>
+            <button class="btn-sm" onclick="refreshCosmicWisdom()">↻ Refresh Transit Wisdom</button>
+          </div>
+          <blockquote class="wisdom-quote" id="wisdom-quote">
+            "You have a sacred right to conscious action, but never to the fruits thereof. Let not the fruit of action be your motive, nor let your attachment be to inaction."
+          </blockquote>
+          <div class="wisdom-sanskrit" id="wisdom-sanskrit">
+            कर्मण्येवाधिकारस्ते मा फलेषु कदाचन | मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ||
+          </div>
+          <div class="wisdom-source">— Srimad Bhagavad Gita (2.47) · Jupiter-Surya Auspicious Drishti</div>
+          
+          <div class="ritual-box">
+            <div class="ritual-title">✦ Today's Actionable Micro-Sadhana:</div>
+            <p id="ritual-desc">Stand facing East at sunrise. Offer fresh water from a copper cup, take 7 deep conscious breaths, and recite the Surya Beej Mantra.</p>
+            <div class="ritual-mantra">Mantra: <strong>Om Hram Hreem Hroum Sah Suryaya Namaha</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: ASK QUESTIONS WITH GOOGLE GEMINI FREE AI -->
+    <section id="ask-ai" class="section ask-ai-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge badge-ai">✦ Powered by Google Gemini Free AI</div>
+          <h2>Ask Astrological Questions (Free 24/7)</h2>
+          <p>Get instant Vedic astrological answers powered by Google Gemini AI. Ask about career timing, relationship compatibility, gemstones, mantras, or Sade Sati.</p>
+        </div>
+
+        <div class="ai-box">
+          <div class="preset-questions">
+            <span class="preset-label">Suggested Questions:</span>
+            <button class="preset-btn" onclick="askPreset('Which Vedic gemstone is most auspicious for career growth?')">Which gemstone for career?</button>
+            <button class="preset-btn" onclick="askPreset('How does Saturn Sade Sati affect my birth chart?')">How does Sade Sati work?</button>
+            <button class="preset-btn" onclick="askPreset('What is checked during Ashtakoota Kundali Milan?')">Kundali Milan matching?</button>
+            <button class="preset-btn" onclick="askPreset('Which daily mantra pleases Jupiter (Guru)?')">Mantra for Jupiter?</button>
+          </div>
+
+          <div class="ai-input-row">
+            <input type="text" id="ai-question-input" placeholder="Ask Google Gemini Free AI any astrology question..." />
+            <button class="btn-primary" onclick="submitAIQuestion()">Ask Free AI</button>
+          </div>
+
+          <div id="ai-response-box" class="ai-response-box hidden">
+            <div class="ai-response-header">
+              <span class="ai-badge">Google Gemini Free AI Response</span>
+              <span class="ai-time">Vedic Astrology Assistant</span>
+            </div>
+            <p id="ai-response-text" class="ai-response-text"></p>
+            <div class="ai-handover">
+              <span>Need a personalized 1-on-1 reading with Ayan Ghosh?</span>
+              <a href="https://wa.me/916294601364" target="_blank" class="btn-whatsapp-sm">Chat on WhatsApp (+91 6294601364)</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: DAILY HOROSCOPES (GEMINI/MITHUNA REMOVED) -->
+    <section id="horoscopes" class="section horoscopes-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge">Vedic Gochara Transits</div>
+          <h2>Personalized Daily Horoscopes</h2>
+          <p>Select your Rashi to explore daily planetary influences on career, relationships, and spiritual remedies.</p>
+        </div>
+
+        <!-- Zodiac Selector (NO Gemini/Mithuna) -->
+        <div class="zodiac-grid" id="zodiac-selector">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Active Horoscope Card -->
+        <div class="horoscope-card" id="horoscope-display">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: READINGS & CONSULTATIONS -->
+    <section id="services" class="section services-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge">Consultation Services</div>
+          <h2>Private Consultations With Ayan Ghosh</h2>
+          <p>Direct WhatsApp Audio/Video sessions with customized horoscope dossiers, transit timelines, and authentic Vedic remedies.</p>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-badge">Quick Urgent Advice</div>
+            <h3>Prashna Kundali (Horary Reading)</h3>
+            <p>Immediate answers for urgent dilemmas when exact birth time is uncertain. Validated by moment of query.</p>
+            <div class="service-price">₹1,499 <span>/ 30 Mins</span></div>
+            <button class="btn-primary" onclick="selectServiceForBooking('Prashna Kundali', 1499)">Book via WhatsApp</button>
+          </div>
+
+          <div class="service-card featured">
+            <div class="service-badge gold">Most Popular</div>
+            <h3>Career, Wealth & Business Jyotish</h3>
+            <p>10th House Karmasthana & D10 Dasamsa analysis. Identify promotion windows, job transitions, and financial timing.</p>
+            <div class="service-price">₹1,999 <span>/ 45 Mins</span></div>
+            <button class="btn-primary" onclick="selectServiceForBooking('Career & Wealth Jyotish', 1999)">Book via WhatsApp</button>
+          </div>
+
+          <div class="service-card">
+            <div class="service-badge">Matchmaking</div>
+            <h3>Kundali Milan & Relationship Compatibility</h3>
+            <p>Ashtakoota 36-Guna scoring, Manglik Dosha evaluation, D9 Navamsha longevity, and emotional harmony.</p>
+            <div class="service-price">₹2,499 <span>/ 45 Mins</span></div>
+            <button class="btn-primary" onclick="selectServiceForBooking('Kundali Milan', 2499)">Book via WhatsApp</button>
+          </div>
+
+          <div class="service-card">
+            <div class="service-badge">Complete Blueprint</div>
+            <h3>Comprehensive Life Kundali Synthesis</h3>
+            <p>All-inclusive 360° life audit: career, marriage, health, foreign travel, Sade Sati, dasha breakdown, and gemstone remedies.</p>
+            <div class="service-price">₹2,999 <span>/ 60 Mins</span></div>
+            <button class="btn-primary" onclick="selectServiceForBooking('Comprehensive Life Synthesis', 2999)">Book via WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: KUNDLI & TRANSITS CALCULATOR -->
+    <section id="calculator" class="section calculator-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge">Birth Chart Engine</div>
+          <h2>Calculate Your Vedic Lagna & Nakshatra</h2>
+          <p>Enter your birth time, date, and city to cast your Vedic Ascendant and Janma Nakshatra.</p>
+        </div>
+
+        <div class="calc-box">
+          <div class="calc-form">
+            <div class="input-group">
+              <label>Full Legal Name</label>
+              <input type="text" id="calc-name" value="Seeker" placeholder="Your name" />
+            </div>
+            <div class="input-group">
+              <label>Date of Birth</label>
+              <input type="date" id="calc-dob" value="1995-10-24" />
+            </div>
+            <div class="input-group">
+              <label>Time of Birth (Exact)</label>
+              <input type="time" id="calc-tob" value="06:30" />
+            </div>
+            <div class="input-group">
+              <label>Place of Birth (City, State)</label>
+              <input type="text" id="calc-pob" value="Kolkata, West Bengal" />
+            </div>
+            <button class="btn-primary-large" onclick="calculateBirthChart()">Calculate Vedic Kundli</button>
+          </div>
+
+          <div id="calc-result" class="calc-result">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: USER DASHBOARD -->
+    <section id="dashboard" class="section dashboard-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="badge">Client Sanctum</div>
+          <h2>Seeker Dashboard</h2>
+          <p>Manage your astrological profile, track booked readings, and sync appointments directly to Google Calendar.</p>
+        </div>
+
+        <div class="dashboard-grid">
+          <!-- Profile Card -->
+          <div class="dash-card">
+            <h3>Astrological Coordinates</h3>
+            <div class="dash-meta">
+              <div><strong>Name:</strong> <span id="dash-name">Seeker</span></div>
+              <div><strong>Lagna (Ascendant):</strong> <span id="dash-lagna">Scorpio (Vrishchika)</span></div>
+              <div><strong>Janma Nakshatra:</strong> <span id="dash-nakshatra">Anuradha (Pada 2)</span></div>
+              <div><strong>Active Mahadasha:</strong> Jupiter (Guru) - Mercury</div>
+            </div>
+            <button class="btn-secondary" onclick="navigateTo('calculator')">Edit Birth Coordinates</button>
+          </div>
+
+          <!-- Appointments Card -->
+          <div class="dash-card">
+            <h3>Booked Consultations</h3>
+            <div class="booking-item">
+              <div>
+                <strong>Comprehensive Life Synthesis</strong>
+                <p>Tomorrow at 11:00 AM IST · 60 Mins via WhatsApp Call</p>
+              </div>
+              <div class="booking-actions">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Astrology+Reading+with+Ayan+Ghosh&details=Direct+WhatsApp+Audio/Video+Reading+with+Ayan+Ghosh+(+91+6294601364)&location=WhatsApp" target="_blank" class="btn-calendar">
+                  + Google Calendar
+                </a>
+                <a href="https://wa.me/916294601364" target="_blank" class="btn-whatsapp-sm">WhatsApp Line</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div>
+        <div class="brand-title">AYAN GHOSH</div>
+        <p class="footer-desc">Professional Vedic Astrologer providing authentic Parashari and Jaimini Jyotish consultations worldwide.</p>
+        <p>WhatsApp Desk: <strong>+91 6294601364</strong></p>
+      </div>
+      <div>
+        <h4>Quick Navigation</h4>
+        <ul>
+          <li><a href="#horoscopes" onclick="navigateTo('horoscopes')">Daily Horoscopes</a></li>
+          <li><a href="#ask-ai" onclick="navigateTo('ask-ai')">Google Gemini Free AI</a></li>
+          <li><a href="#services" onclick="navigateTo('services')">Reading Packages</a></li>
+          <li><a href="#calculator" onclick="navigateTo('calculator')">Kundli Calculator</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Booking Modal -->
+  <div id="booking-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Reserve Vedic Reading with Ayan Ghosh</h3>
+        <button class="btn-close" onclick="closeBookingModal()">✕</button>
+      </div>
+      <form id="booking-form" onsubmit="handleBookingSubmit(event)">
+        <div class="input-group">
+          <label>Selected Service</label>
+          <input type="text" id="modal-service" value="Comprehensive Life Synthesis (₹2,999)" readonly />
+        </div>
+        <div class="input-group">
+          <label>Your Full Name</label>
+          <input type="text" id="modal-name" required placeholder="Enter your full name" />
+        </div>
+        <div class="input-group">
+          <label>WhatsApp Phone Number</label>
+          <input type="tel" id="modal-phone" required placeholder="e.g. +91 9876543210" />
+        </div>
+        <div class="input-group">
+          <label>Date of Birth (DOB)</label>
+          <input type="date" id="modal-dob" required />
+        </div>
+        <div class="input-group">
+          <label>Time of Birth (TOB)</label>
+          <input type="time" id="modal-tob" required />
+        </div>
+        <div class="input-group">
+          <label>Place of Birth (City & State)</label>
+          <input type="text" id="modal-pob" required placeholder="e.g. Kolkata, West Bengal" />
+        </div>
+        <button type="submit" class="btn-primary-large">Proceed to WhatsApp Desk (+91 6294601364)</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
