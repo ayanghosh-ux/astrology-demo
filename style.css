@@ -154,6 +154,34 @@ a {
   gap: 12px;
 }
 
+/* Mobile Nav Toggle (hamburger) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--gold-light);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; }
+.nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* Buttons */
 .btn-primary, .btn-primary-large {
   background: var(--gold-gradient);
@@ -530,7 +558,7 @@ a {
   border-radius: 14px;
   padding: 26px;
   display: flex;
-  flex-col: column;
+  flex-direction: column;
   position: relative;
 }
 
@@ -631,6 +659,18 @@ a {
   margin: 30px auto 0;
 }
 
+.dash-meta div {
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+
+.dash-meta strong {
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
 .booking-item {
   display: flex;
   justify-content: space-between;
@@ -711,18 +751,226 @@ a {
 }
 
 /* Responsive */
+img, svg { max-width: 100%; }
+
 @media (max-width: 768px) {
-  .nav-links, .nav-actions .btn-whatsapp {
+  .section {
+    padding: 56px 0;
+  }
+
+  /* Hamburger nav */
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 75px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    gap: 6px;
     display: none;
+    overflow-y: auto;
+    z-index: 99;
   }
+
+  .nav-menu.open {
+    display: flex;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 15px;
+  }
+
+  .nav-links a {
+    padding: 12px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .nav-actions .btn-whatsapp,
+  .nav-actions .btn-primary {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* Hero */
+  .hero-section {
+    padding: 60px 0 50px;
+  }
+
   .hero-title {
-    font-size: 30px;
+    font-size: 28px;
   }
+
+  .hero-desc {
+    font-size: 15px;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .hero-cta-group button {
+    width: 100%;
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Wisdom card */
+  .wisdom-card {
+    padding: 22px;
+  }
+
+  .wisdom-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .wisdom-quote {
+    font-size: 17px;
+  }
+
+  /* Ask AI */
+  .ai-box {
+    padding: 20px;
+  }
+
+  .ai-input-row {
+    flex-direction: column;
+  }
+
+  .ai-input-row input {
+    font-size: 16px; /* prevents iOS auto-zoom on focus */
+  }
+
+  .ai-input-row button {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .ai-handover {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* Zodiac grid */
+  .zodiac-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .horoscope-card {
+    padding: 22px;
+  }
+
+  .horoscope-card div[style*="justify-content: space-between"] {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Services */
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Calculator & dashboard */
+  .calc-box, .dash-card {
+    padding: 20px;
+  }
+
   .calc-form, .dashboard-grid, .footer-container {
     grid-template-columns: 1fr;
     flex-direction: column;
   }
+
   .calc-form button {
     grid-column: span 1;
+    width: 100%;
+  }
+
+  .calc-form input,
+  .input-group input {
+    font-size: 16px; /* prevents iOS auto-zoom on focus */
+  }
+
+  .dashboard-grid {
+    gap: 16px;
+  }
+
+  .booking-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .booking-actions {
+    justify-content: stretch;
+  }
+
+  .booking-actions a {
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Footer */
+  .footer-container {
+    gap: 32px;
+  }
+
+  /* Modal */
+  .modal-content {
+    padding: 22px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-title {
+    font-size: 24px;
+  }
+
+  .hero-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  .zodiac-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .brand-title {
+    font-size: 16px;
+  }
+
+  .brand-sub {
+    font-size: 8px;
   }
 }
