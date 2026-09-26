@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Astrologer Ayan Ghosh · Vedic Jyotish Sanctum</title>
-  <meta name="description" content="Consult Astrologer Ayan Ghosh. Book Vedic readings, get personalized daily horoscopes, sync to Google Calendar, and ask Google Gemini Free AI." />
+  <meta name="description" content="Consult Astrologer Ayan Ghosh. Book Vedic readings, get personalized daily horoscopes, sync to Google Calendar, and ask free AI astrology questions." />
   
   <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,21 +26,27 @@
         </div>
       </div>
 
-      <nav class="nav-links">
-        <a href="#home" onclick="navigateTo('home')" class="active">Overview</a>
-        <a href="#horoscopes" onclick="navigateTo('horoscopes')">Daily Horoscopes</a>
-        <a href="#ask-ai" onclick="navigateTo('ask-ai')" class="ai-link">✦ Ask Free AI</a>
-        <a href="#services" onclick="navigateTo('services')">Readings</a>
-        <a href="#calculator" onclick="navigateTo('calculator')">Kundli & Transits</a>
-        <a href="#dashboard" onclick="navigateTo('dashboard')">Dashboard</a>
-      </nav>
+      <div class="nav-menu" id="nav-menu">
+        <nav class="nav-links">
+          <a href="#home" onclick="navigateTo('home')" class="active">Overview</a>
+          <a href="#horoscopes" onclick="navigateTo('horoscopes')">Daily Horoscopes</a>
+          <a href="#ask-ai" onclick="navigateTo('ask-ai')" class="ai-link">✦ Ask AI</a>
+          <a href="#services" onclick="navigateTo('services')">Readings</a>
+          <a href="#calculator" onclick="navigateTo('calculator')">Kundli & Transits</a>
+          <a href="#dashboard" onclick="navigateTo('dashboard')">Dashboard</a>
+        </nav>
 
-      <div class="nav-actions">
-        <a href="https://wa.me/916294601364?text=Namaskar%20Astrologer%20Ayan%20Ghosh%20ji,%20I%20would%20like%20to%20consult%20with%20you." target="_blank" class="btn-whatsapp">
-          WhatsApp: 6294601364
-        </a>
-        <button class="btn-primary" onclick="openBookingModal()">Book Reading</button>
+        <div class="nav-actions">
+          <a href="https://wa.me/916294601364?text=Namaskar%20Astrologer%20Ayan%20Ghosh%20ji,%20I%20would%20like%20to%20consult%20with%20you." target="_blank" class="btn-whatsapp">
+            WhatsApp: 6294601364
+          </a>
+          <button class="btn-primary" onclick="openBookingModal()">Book Reading</button>
+        </div>
       </div>
+
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -57,7 +63,7 @@
         </p>
         <div class="hero-cta-group">
           <button class="btn-primary-large" onclick="openBookingModal()">Book Confidential Reading</button>
-          <button class="btn-secondary-large" onclick="navigateTo('ask-ai')">Ask Google Gemini Free AI</button>
+          <button class="btn-secondary-large" onclick="navigateTo('ask-ai')">Ask Free AI</button>
         </div>
 
         <div class="hero-stats">
@@ -106,13 +112,13 @@
       </div>
     </section>
 
-    <!-- SECTION 3: ASK QUESTIONS WITH GOOGLE GEMINI FREE AI -->
+    <!-- SECTION 3: ASK QUESTIONS WITH AI -->
     <section id="ask-ai" class="section ask-ai-section">
       <div class="container">
         <div class="section-header text-center">
-          <div class="badge badge-ai">✦ Powered by Google Gemini Free AI</div>
+          <div class="badge badge-ai">✦ Powered by AI</div>
           <h2>Ask Astrological Questions (Free 24/7)</h2>
-          <p>Get instant Vedic astrological answers powered by Google Gemini AI. Ask about career timing, relationship compatibility, gemstones, mantras, or Sade Sati.</p>
+          <p>Get instant Vedic astrological answers powered by AI. Ask about career timing, relationship compatibility, gemstones, mantras, or Sade Sati.</p>
         </div>
 
         <div class="ai-box">
@@ -125,13 +131,13 @@
           </div>
 
           <div class="ai-input-row">
-            <input type="text" id="ai-question-input" placeholder="Ask Google Gemini Free AI any astrology question..." />
+            <input type="text" id="ai-question-input" placeholder="Ask AI any astrology question..." />
             <button class="btn-primary" onclick="submitAIQuestion()">Ask Free AI</button>
           </div>
 
           <div id="ai-response-box" class="ai-response-box hidden">
             <div class="ai-response-header">
-              <span class="ai-badge">Google Gemini Free AI Response</span>
+              <span class="ai-badge">AI Response</span>
               <span class="ai-time">Vedic Astrology Assistant</span>
             </div>
             <p id="ai-response-text" class="ai-response-text"></p>
@@ -303,7 +309,7 @@
         <h4>Quick Navigation</h4>
         <ul>
           <li><a href="#horoscopes" onclick="navigateTo('horoscopes')">Daily Horoscopes</a></li>
-          <li><a href="#ask-ai" onclick="navigateTo('ask-ai')">Google Gemini Free AI</a></li>
+          <li><a href="#ask-ai" onclick="navigateTo('ask-ai')">Ask AI</a></li>
           <li><a href="#services" onclick="navigateTo('services')">Reading Packages</a></li>
           <li><a href="#calculator" onclick="navigateTo('calculator')">Kundli Calculator</a></li>
         </ul>
