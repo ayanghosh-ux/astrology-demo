@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-cinzel: 'Cinzel', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #06070c;
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-cinzel {
+    font-family: var(--font-cinzel);
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Custom subtle starry / cosmic glow animations */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.9); }
+  50% { opacity: 0.9; transform: scale(1.1); }
+}
+
+@keyframes celestialRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-twinkle-1 {
+  animation: twinkle 4s ease-in-out infinite;
+}
+.animate-twinkle-2 {
+  animation: twinkle 6s ease-in-out infinite 1.5s;
+}
+.animate-twinkle-3 {
+  animation: twinkle 5s ease-in-out infinite 3s;
+}
+
+.animate-celestial-spin {
+  animation: celestialRotate 140s linear infinite;
+}
+
+.animate-float {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090a12;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f2438;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cba34e;
+}
