@@ -125,6 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
   calculateBirthChart();
   initScrollReveal();
   initNavbarScrollShadow();
+  initHoroscopeSwipe();
+  initRippleEffect();
+  initServicesCarouselDots();
+  initBackToTop();
+  initModalDragToDismiss();
 });
 
 // Scroll-reveal: fade+slide elements in as they enter the viewport
@@ -182,6 +187,147 @@ function initNavbarScrollShadow() {
   window.addEventListener('scroll', update, { passive: true });
 }
 
+// Swipe left/right on the horoscope card to move between zodiac signs
+function initHoroscopeSwipe() {
+  const el = document.getElementById('horoscope-display');
+  if (!el) return;
+
+  let startX = 0, startY = 0, tracking = false;
+
+  el.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    tracking = true;
+  }, { passive: true });
+
+  el.addEventListener('touchend', (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+
+    // Only treat as a swipe if horizontal movement clearly dominates vertical
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+      shiftSign(dx < 0 ? 1 : -1);
+      vibrate(8);
+    }
+  }, { passive: true });
+}
+
+// Small haptic buzz on supported devices; silently does nothing elsewhere
+function vibrate(ms) {
+  if (navigator.vibrate) {
+    try { navigator.vibrate(ms); } catch (err) { /* no-op */ }
+  }
+}
+
+// Material-style tap ripple + press feedback on primary interactive elements
+function initRippleEffect() {
+  const selector = '.btn-primary, .btn-primary-large, .btn-secondary, .btn-secondary-large, ' +
+    '.btn-whatsapp, .btn-whatsapp-sm, .btn-calendar, .btn-sm, .zodiac-btn, .preset-btn, .horoscope-arrow';
+
+  document.querySelectorAll(selector).forEach(el => el.classList.add('ripple-host'));
+
+  document.addEventListener('pointerdown', (e) => {
+    const target = e.target.closest(selector);
+    if (!target) return;
+
+    const rect = target.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+    target.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove());
+
+    if (target.matches('.btn-primary, .btn-primary-large')) {
+      vibrate(8);
+    }
+  });
+}
+
+// Sync dot indicators with the swipeable pricing carousel (mobile)
+function initServicesCarouselDots() {
+  const track = document.querySelector('.services-grid');
+  const cards = track ? Array.from(track.querySelectorAll('.service-card')) : [];
+  if (!track || cards.length < 2) return;
+
+  const dotsWrap = document.createElement('div');
+  dotsWrap.className = 'carousel-dots';
+  cards.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dotsWrap.appendChild(dot);
+  });
+  track.insertAdjacentElement('afterend', dotsWrap);
+
+  const dots = Array.from(dotsWrap.children);
+  if (!('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = cards.indexOf(entry.target);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { root: track, threshold: 0.6 });
+
+  cards.forEach(card => observer.observe(card));
+}
+
+// Floating "back to top" button that appears once the page is scrolled
+function initBackToTop() {
+  const btn = document.getElementById('back-to-top');
+  if (!btn) return;
+
+  const update = () => btn.classList.toggle('visible', window.scrollY > 480);
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+}
+
+// Swipe-down-to-dismiss for the booking modal (bottom sheet on mobile)
+function initModalDragToDismiss() {
+  const modal = document.getElementById('booking-modal');
+  const sheet = modal ? modal.querySelector('.modal-content') : null;
+  const dragZones = modal ? modal.querySelectorAll('.modal-drag-handle, .modal-header') : [];
+  if (!sheet || !dragZones.length) return;
+
+  let startY = 0, deltaY = 0, dragging = false;
+
+  dragZones.forEach(zone => {
+    zone.addEventListener('touchstart', (e) => {
+      startY = e.touches[0].clientY;
+      dragging = true;
+      sheet.style.transition = 'none';
+    }, { passive: true });
+
+    zone.addEventListener('touchmove', (e) => {
+      if (!dragging) return;
+      deltaY = e.touches[0].clientY - startY;
+      if (deltaY > 0) {
+        sheet.style.transform = `translateY(${deltaY}px)`;
+      }
+    }, { passive: true });
+
+    zone.addEventListener('touchend', () => {
+      if (!dragging) return;
+      dragging = false;
+      sheet.style.transition = 'transform 0.25s ease';
+
+      if (deltaY > 90) {
+        closeBookingModal();
+      }
+      sheet.style.transform = 'translateY(0)';
+      deltaY = 0;
+    });
+  });
+}
+
 // Render Zodiac Buttons
 function renderZodiacButtons() {
   const container = document.getElementById('zodiac-selector');
@@ -207,37 +353,54 @@ function selectSign(signId) {
     btn.classList.toggle('active', ZODIAC_SIGNS[idx].id === signId);
   });
 
-  // Render Horoscope Card
+  // Render Horoscope Card (with a brief cross-fade transition)
   const display = document.getElementById('horoscope-display');
   if (!display) return;
 
-  display.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <div>
-        <h3 style="font-size: 22px; color: var(--gold-light);">${sign.name} (${sign.sanskrit})</h3>
-        <span style="font-size: 12px; color: var(--text-muted);">${sign.dates} · Today's Gochara Transit</span>
+  display.classList.add('is-changing');
+
+  setTimeout(() => {
+    display.innerHTML = `
+      <div class="horoscope-nav">
+        <button class="horoscope-arrow" onclick="shiftSign(-1)" aria-label="Previous sign">‹</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex: 1; gap: 10px;">
+          <div>
+            <h3 style="font-size: 22px; color: var(--gold-light);">${sign.name} (${sign.sanskrit})</h3>
+            <span style="font-size: 12px; color: var(--text-muted);">${sign.dates} · Today's Gochara Transit</span>
+          </div>
+          <span style="font-size: 32px; color: var(--gold-primary);">${sign.symbol}</span>
+        </div>
+        <button class="horoscope-arrow" onclick="shiftSign(1)" aria-label="Next sign">›</button>
       </div>
-      <span style="font-size: 32px; color: var(--gold-primary);">${sign.symbol}</span>
-    </div>
-    <p style="font-size: 15px; margin-bottom: 20px; line-height: 1.6;">${data.summary}</p>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; font-size: 13px;">
-      <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
-        <strong>Career & Karmasthana:</strong>
-        <p style="color: var(--text-muted); margin-top: 4px;">${data.career}</p>
+      <p class="swipe-hint">← Swipe to explore other signs →</p>
+      <p style="font-size: 15px; margin-bottom: 20px; line-height: 1.6;">${data.summary}</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; font-size: 13px;">
+        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+          <strong>Career & Karmasthana:</strong>
+          <p style="color: var(--text-muted); margin-top: 4px;">${data.career}</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+          <strong>Love & Kalatrasthana:</strong>
+          <p style="color: var(--text-muted); margin-top: 4px;">${data.love}</p>
+        </div>
       </div>
-      <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
-        <strong>Love & Kalatrasthana:</strong>
-        <p style="color: var(--text-muted); margin-top: 4px;">${data.love}</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; font-size: 12px;">
+        <div>
+          <span>Auspicious Color: <strong>${data.luckyColor}</strong></span> · 
+          <span>Lucky Number: <strong>${data.luckyNumber}</strong></span>
+        </div>
+        <a href="https://wa.me/916294601364?text=Namaskar%20Ayan%20ji,%20I%20checked%20my%20${sign.name}%20horoscope%20and%20want%20a%20full%20reading." target="_blank" class="btn-whatsapp-sm">Consult Ayan on WhatsApp</a>
       </div>
-    </div>
-    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; font-size: 12px;">
-      <div>
-        <span>Auspicious Color: <strong>${data.luckyColor}</strong></span> · 
-        <span>Lucky Number: <strong>${data.luckyNumber}</strong></span>
-      </div>
-      <a href="https://wa.me/916294601364?text=Namaskar%20Ayan%20ji,%20I%20checked%20my%20${sign.name}%20horoscope%20and%20want%20a%20full%20reading." target="_blank" class="btn-whatsapp-sm">Consult Ayan on WhatsApp</a>
-    </div>
-  `;
+    `;
+    requestAnimationFrame(() => display.classList.remove('is-changing'));
+  }, 160);
+}
+
+// Move to the previous/next zodiac sign (used by swipe gesture and arrow buttons)
+function shiftSign(delta) {
+  const idx = ZODIAC_SIGNS.findIndex(s => s.id === currentSignId);
+  const nextIdx = (idx + delta + ZODIAC_SIGNS.length) % ZODIAC_SIGNS.length;
+  selectSign(ZODIAC_SIGNS[nextIdx].id);
 }
 
 // Navigation Helper
@@ -368,7 +531,9 @@ function refreshCosmicWisdom() {
 function openBookingModal(serviceName = 'Comprehensive Life Synthesis (₹2,999)') {
   const modal = document.getElementById('booking-modal');
   const serviceInput = document.getElementById('modal-service');
+  const sheet = modal ? modal.querySelector('.modal-content') : null;
   if (serviceInput) serviceInput.value = serviceName;
+  if (sheet) sheet.style.transform = 'translateY(0)';
   if (modal) modal.classList.remove('hidden');
   closeMobileMenu();
 }
