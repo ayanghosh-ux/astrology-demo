@@ -123,7 +123,64 @@ document.addEventListener('DOMContentLoaded', () => {
   renderZodiacButtons();
   selectSign('scorpio');
   calculateBirthChart();
+  initScrollReveal();
+  initNavbarScrollShadow();
 });
+
+// Scroll-reveal: fade+slide elements in as they enter the viewport
+function initScrollReveal() {
+  const selector = [
+    '.section-header',
+    '.wisdom-card',
+    '.ai-box',
+    '.zodiac-grid',
+    '.horoscope-card',
+    '.service-card',
+    '.calc-box',
+    '.dash-card'
+  ].join(', ');
+
+  const targets = document.querySelectorAll(selector);
+  if (!targets.length) return;
+
+  // Respect users who prefer reduced motion: show everything immediately
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    targets.forEach(el => el.classList.add('reveal', 'in-view'));
+    return;
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(el => el.classList.add('reveal', 'in-view'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Small stagger for groups of cards revealing together
+        setTimeout(() => entry.target.classList.add('in-view'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  targets.forEach(el => {
+    el.classList.add('reveal');
+    observer.observe(el);
+  });
+}
+
+// Navbar gains a subtle shadow once the page is scrolled
+function initNavbarScrollShadow() {
+  const navbar = document.querySelector('.navbar');
+  if (!navbar) return;
+
+  const update = () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 12);
+  };
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+}
 
 // Render Zodiac Buttons
 function renderZodiacButtons() {
